@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           bro3_map_tool
-// @version        2.39
+// @version        2.40
 // @namespace      http://blog.livedoor.jp/froo/
 // @include        http://*.3gokushi.jp/map.php*
 // @include        http://*.3gokushi.jp/alliance/info.php*
@@ -14,7 +14,7 @@
 // 公開ページ: http://blog.livedoor.jp/froo/archives/51365945.html
 // 使い方: 全体地図ページ左下「地図ツール」の各リンクをクリック
 
-var VERSION = "2.39";
+var VERSION = "2.40";
 var LOCAL_STORAGE = "bro3_map_tool";
 
 var RADIUS = 25; //半径（中域）
@@ -405,7 +405,7 @@ function saveUserForProf() {
 	//「同盟」欄取得
 	var ally = "";
 	var allyElem = document.evaluate(
-		'//*[@id="gray02Wrapper"]//table/tbody/tr[3]/td[4]/a',
+		'//*[@id="gray02Wrapper"]//table/tbody/tr[4]/td[5]/a',
 		document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 	ally = allyElem.snapshotItem(0).innerHTML;
 	
@@ -419,7 +419,8 @@ function saveUserForProf() {
 		var item = landElems.snapshotItem(i);
 		
 		if (!isLandList) {
-			if (trim(getChildElement(item, 0).innerHTML) == "名前") {
+			var firstElem = getChildElement(item, 0);
+			if (firstElem && trim(firstElem.innerHTML) == "名前") {
 				isLandList = true;
 			}
 			continue;
