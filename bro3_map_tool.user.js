@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           bro3_map_tool
-// @version        2.40
+// @version        2.41
 // @namespace      http://blog.livedoor.jp/froo/
 // @include        http://*.3gokushi.jp/map.php*
 // @include        http://*.3gokushi.jp/alliance/info.php*
@@ -14,7 +14,7 @@
 // 公開ページ: http://blog.livedoor.jp/froo/archives/51365945.html
 // 使い方: 全体地図ページ左下「地図ツール」の各リンクをクリック
 
-var VERSION = "2.40";
+var VERSION = "2.41";
 var LOCAL_STORAGE = "bro3_map_tool";
 
 var RADIUS = 25; //半径（中域）
@@ -1912,6 +1912,7 @@ function getMyXY() {
 	};
 
 	var nowLoc = $x('id("gnavi")//a[contains(@href,"map.php")]');
+	if (!nowLoc) nowLoc = $x('id("gNav")//a[contains(@href,"map.php")]');
 	if (!nowLoc) return "";
 
 	var xy = nowLoc.href.match(/x=([\-0-9]+)&y=([\-0-9]+)/i);
