@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           bro3_map_tool
-// @version        2.41
+// @version        2.42
 // @namespace      http://blog.livedoor.jp/froo/
 // @include        http://*.3gokushi.jp/map.php*
 // @include        http://*.3gokushi.jp/alliance/info.php*
@@ -14,7 +14,7 @@
 // 公開ページ: http://blog.livedoor.jp/froo/archives/51365945.html
 // 使い方: 全体地図ページ左下「地図ツール」の各リンクをクリック
 
-var VERSION = "2.41";
+var VERSION = "2.42";
 var LOCAL_STORAGE = "bro3_map_tool";
 
 var RADIUS = 25; //半径（中域）
@@ -493,7 +493,7 @@ function addMapHtml() {
 	var mapElem = document.evaluate('//*[@id="mapboxInner"]',
 		document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 	mapElem.snapshotItem(0).insertBefore(
-		rootElem, document.getElementById("mapAll").nextSibling);
+		rootElem, getMapAllElement().nextSibling);
 	
 	addLinkHtml(rootElem);
 	addBodyHtml(rootElem);
@@ -1475,7 +1475,7 @@ function genPopupText(data, x, y) {
 function changeMap() {
 	//現在の表示を消去
 	if (MAP_MODE != MAP_MODE_S) {
-		document.getElementById("mapAll").style.display = "none";
+		getMapAllElement().style.display = "none";
 		document.getElementById("maptoolLink").style.display = "none";
 	} else {
 		document.getElementById("maptoolHead").style.display = "none";
@@ -1520,7 +1520,7 @@ function changeMap() {
 			var y = parseInt(getParameter("y"));
 			if (isNaN(y)) y = 0;
 			if (x == CENTER_X && y == CENTER_Y) {
-				document.getElementById("mapAll").style.display = "block";
+				getMapAllElement().style.display = "block";
 				document.getElementById("maptoolLink").style.display = "block";
 				window.scroll(0,0);
 			} else {
@@ -1801,7 +1801,7 @@ function outputMapCsvL() {
 	outputMapCsv(CSV_RADIUS_L);
 }
 function outputMapCsv(radius) {
-	document.getElementById("mapAll").style.display = "none";
+	getMapAllElement().style.display = "none";
 	document.getElementById("maptoolLink").style.display = "none";
 	
 	var frameElem = document.createElement("iframe");
@@ -1812,7 +1812,7 @@ function outputMapCsv(radius) {
 	var mapElem = document.evaluate('//*[@id="mapboxInner"]',
 		document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 	mapElem.snapshotItem(0).insertBefore(
-		frameElem, document.getElementById("mapAll").nextSibling);
+		frameElem, getMapAllElement().nextSibling);
 	
 	//時間がかかるので別スレッド化（一旦描画して砂時計を表示させる）
 	setWaitCursor();
@@ -1876,6 +1876,16 @@ function outputMapCsv(radius) {
 		addElem.innerHTML = csvText;
 		resetCursor();
 	}, 100);
+}
+
+// 地図表示領域全体Element取得
+function getMapAllElement() {
+	var idx, elem,
+		seasons = ["Spring", "Summer", "Autumn", "Winter", ""];
+	for (idx = 0; idx < seasons.length; idx++) {
+		elem = document.getElementById("mapAll" + seasons[idx]);
+		if (elem) return elem;
+	}
 }
 
 //マスデータキー生成
