@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           bro3_map_tool
-// @version        2.42
+// @version        2.43
 // @namespace      http://blog.livedoor.jp/froo/
 // @include        http://*.3gokushi.jp/map.php*
 // @include        http://*.3gokushi.jp/alliance/info.php*
@@ -14,7 +14,7 @@
 // 公開ページ: http://blog.livedoor.jp/froo/archives/51365945.html
 // 使い方: 全体地図ページ左下「地図ツール」の各リンクをクリック
 
-var VERSION = "2.42";
+var VERSION = "2.43";
 var LOCAL_STORAGE = "bro3_map_tool";
 
 var RADIUS = 25; //半径（中域）
@@ -376,12 +376,12 @@ function saveAllyForAllyInfo() {
 	//「状態」欄取得
 	var parentAlly = "";
 	var statElem = document.evaluate(
-		'//*[@id="gray02Wrapper"]//table/tbody/tr[6]/td',
+		'//*[@id="gray02Wrapper"]//table/tbody/tr[5]/td[2]',
 		document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 	
 	if (statElem.snapshotItem(0).innerHTML.match(/親同盟/)) {
 		var parentAllyElem = document.evaluate(
-			'//*[@id="gray02Wrapper"]//table/tbody/tr[6]/td/a',
+			'//*[@id="gray02Wrapper"]//table/tbody/tr[5]/td[2]/a',
 			document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 		if (parentAllyElem.snapshotLength >= 1) {
 			parentAlly = parentAllyElem.snapshotItem(0).innerHTML;
